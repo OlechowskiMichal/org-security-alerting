@@ -23,20 +23,24 @@ Standalone OpenTofu module for organization-wide security alerting. Deploys SNS 
 ## Key Files
 
 ```text
-tofu/main.tf                    # All alerting resources (SNS, metric filters, EventBridge)
-tofu/variables.tf               # Input variables (KMS key ID, log group name, email, region)
-tofu/outputs.tf                 # sns_topic_arn
-conftest.toml                   # OPA policy config
+tofu/main.tf                           # Root module orchestrating sns, metric_alarms, and eventbridge submodules
+tofu/modules/sns/                      # SNS topic, email subscription, and topic policy
+tofu/modules/metric_alarms/            # CloudWatch metric filters and alarms
+tofu/modules/eventbridge/              # EventBridge rules for GuardDuty and SecurityHub
+tofu/variables.tf                      # Input variables (KMS key ID, log group name, email, region)
+tofu/outputs.tf                        # sns_topic_arn
+conftest.toml                          # OPA policy config
 ```
 
 ## Module Resources
 
-| Resource | Account | Purpose |
-|----------|---------|---------|
-| SNS topic | Management | Security alert notifications (KMS encrypted) |
-| SNS email subscription | Management | Alert delivery to email |
-| Metric filters + alarms | Management | Unauthorized API, root usage, MFA-less sign-in |
-| EventBridge rules | Management | GuardDuty + SecurityHub high/critical findings |
+| Resource | Module | Account | Purpose |
+|----------|--------|---------|---------|
+| SNS topic | sns | Management | Security alert notifications (KMS encrypted) |
+| SNS email subscription | sns | Management | Alert delivery to email |
+| SNS topic policy | sns | Management | Allow CloudWatch and EventBridge to publish |
+| Metric filters + alarms | metric_alarms | Management | Unauthorized API, root usage, MFA-less sign-in |
+| EventBridge rules | eventbridge | Management | GuardDuty + SecurityHub high/critical findings |
 
 ## Provider Configuration
 

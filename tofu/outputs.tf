@@ -1,6 +1,4 @@
-# Outputs
-
-output "example_bucket_name" {
-  description = "The name of the example S3 bucket"
-  value       = module.example.bucket_name
+output "sns_topic_arn" {
+  description = "ARN of the security alerts SNS topic"
+  value       = module.sns.topic_arn
 }

@@ -14,6 +14,8 @@ tasks:
     desc: Run all tests (for CI)
     cmds:
       - task: validate
+      - task: :lint:go
+      - task: :test:default
 
   plan:
     desc: Run plan with CI output capture

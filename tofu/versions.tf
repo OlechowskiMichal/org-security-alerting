@@ -8,11 +8,9 @@ terraform {
     }
   }
 
-  # S3 backend for state storage
-  # Replace placeholder values with your state backend outputs
   backend "s3" {
     bucket         = "REPLACE_BUCKET_NAME"
-    key            = "REPLACE_KEY"
+    key            = "security-alerting/terraform.tfstate"
     region         = "REPLACE_REGION"
     dynamodb_table = "REPLACE_DYNAMODB_TABLE"
     encrypt        = true

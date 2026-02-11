@@ -1,8 +1,19 @@
-# Root orchestrator — calls child modules
+module "sns" {
+  source = "./modules/sns"
 
-module "example" {
-  source = "./modules/example"
+  kms_key_id  = var.kms_key_id
+  alert_email = var.alert_email
+}
 
-  project_name = var.project_name
-  environment  = var.environment
+module "metric_alarms" {
+  source = "./modules/metric_alarms"
+
+  cloudwatch_log_group_name = var.cloudwatch_log_group_name
+  sns_topic_arn             = module.sns.topic_arn
+}
+
+module "eventbridge" {
+  source = "./modules/eventbridge"
+
+  sns_topic_arn = module.sns.topic_arn
 }
